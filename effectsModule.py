@@ -6,7 +6,7 @@ class Effect():    #Базовый класс эффектов, имеет ко�
     def use(self, target, i): #Уменьшает кол-во оставшихся ходов эффекта или удаляет его(ссылку)
         if self.turns > 1:
             print('Turns =' + str(self.turns) + ', name = ' + str(self.type))
-            self.turns -= 1
+            self.turns -= 2
             return True
         else:
             del target.effects[i]
