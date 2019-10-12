@@ -31,6 +31,9 @@ class Skill():
         elif random.random() < player.dexWithArmor * 1.5 + 15:
             return True
         else:
+            for effect in player.effect:
+                if effect.type == 11 and effect.turns >=1:
+                    return True
             return False
 
 class Run_Back(Skill):
@@ -53,9 +56,42 @@ class Runaway(Skill):
         self.useDesc = 'Вы сбежали от битвы'
         self.minrange = 30
     def use(self, battle, player, mob):
-        Skill.use(self, battle, player, mob)
         if battle.range>self.minrange and (random.random() < player.dexWithArmor * 8 - mob.dex*3):
             battle.run = True
+
+class Shot(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Shot'
+        self.name = 'Shot'
+        self.useDesc = 'Вы нанесли 20 урона'
+    def use(self, battle, player, mob):
+        if Skill.use(self, battle, player, mob):
+            damage = player.dexWithArmor + 20
+            for effect in mob.effects:
+                if effect.type == 10:
+                    damage *= (100+effect.strength)/100
+                    break
+                elif effect.type == 5 and effect.turns >=1:
+                    damage *= (100 + effect.strength) / 100
+                    break
+            if self.critical(player):
+                mob.take_damage(damage*2)
+            else:
+                mob.take_damage(damage)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Attack(Skill):
     def __init__(self):

@@ -177,3 +177,18 @@ class Dex_weaking(Weakening):
         Weakening.__init__(self, turns, target, strength, 9, target.dex)
 
 
+class Concentration(Effect):
+    def __init__(self, turns, target, strength):
+        Effect.__init__(self,turns, target)
+        self.strength = strength
+        self.check(target)
+        self.type = 11
+    def use(self, target, i):
+        Effect.use(self, target, i)
+    def check(self, target):
+        for effect in target.effects:
+            if effect.type == 11 and effect.turns > 0:
+                effect.turns += self.turns
+                if effect.strength < self.strength:
+                    effect.strength = self.strength
+                self.turns = 0

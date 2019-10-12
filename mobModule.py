@@ -4,6 +4,7 @@ import effectsModule as effects
 class Mob():  #Базовый класс моба, имеющий
     def __init__(self):
         self.str = 0
+        self.dex = 0
         self.evade = -0.15
         self.exp = 0
         self.stop = False
@@ -33,7 +34,9 @@ class Mob():  #Базовый класс моба, имеющий
         else:
             player.hp-= n
             print('Вы получили '+n+' урона')
-    #def take_damage(self, n, ):
+    def take_damage(self, n):
+        if random.random() > self.dex*2:
+            self.hp -= n
 
 
 
