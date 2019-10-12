@@ -24,7 +24,8 @@ class Skill():
             return True
     def critical(self, player):
         if player.passive[0] == 'battle art':
-            if random.random() < player.dexWithArmor * 1.5 + 15:
+            if random.random() < player.dexWithArmor * 1.5+player.intWithArmor + 15:
+                return True
         elif player.passive[0] == 'perfect magic':
             return False
         elif random.random() < player.dexWithArmor * 1.5 + 15:
@@ -32,16 +33,29 @@ class Skill():
         else:
             return False
 
+class Run_Back(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+    def use(self, battle, player, mob):
+        battle.range += player.dexWithArmor
 
-class Run(Skill):
+class Run_Forwarfd(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+    def use(self, battle, player, mob):
+        battle.range -= player.dexWithArmor
+
+class Runaway(Skill):
     def __init__(self):
         Skill.__init__(self)
         self.description = 'Run'
         self.name = 'Run'
         self.useDesc = 'Вы сбежали от битвы'
+        self.minrange = 30
     def use(self, battle, player, mob):
         Skill.use(self, battle, player, mob)
-        battle.run = True
+        if battle.range>self.minrange and (random.random() < player.dexWithArmor * 8 - mob.dex*3):
+            battle.run = True
 
 class Attack(Skill):
     def __init__(self):

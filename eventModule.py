@@ -99,6 +99,6 @@ class Battle(Event):
                     print('YOU DIED')
                     break
                 self.pTurn()
-                if self.run == True:
+                if (self.run == True or self.range >=60) and self.player.passive[0]!='total_defence':
                     return False
         return True
