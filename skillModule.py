@@ -66,19 +66,21 @@ class Shot(Skill):
         self.name = 'Shot'
         self.useDesc = 'Вы нанесли 20 урона'
     def use(self, battle, player, mob):
-        if Skill.use(self, battle, player, mob):
-            damage = player.dexWithArmor + 20
-            for effect in mob.effects:
-                if effect.type == 10:
-                    damage *= (100+effect.strength)/100
-                    break
-                elif effect.type == 5 and effect.turns >=1:
-                    damage *= (100 + effect.strength) / 100
-                    break
-            if self.critical(player):
-                mob.take_damage(damage*2)
-            else:
-                mob.take_damage(damage)
+        for effect in player.effects:
+            if effect.type == 12 and effect.turns >= 1:
+                for i in range(effect.strength):
+                    if Skill.use(self, battle, player, mob):
+                        damage = player.dexWithArmor + 20
+                        for effect in mob.effects:
+                            if effect.type == 10:
+                                damage *= (100+effect.strength)/100
+                                break
+                            elif effect.type == 5 and effect.turns >=1:
+                                damage *= (100 + effect.strength) / 100
+                                break
+                        if self.critical(player):
+                            damage*=2
+                        mob.take_damage(damage)
 
 
 
