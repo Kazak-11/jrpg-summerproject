@@ -3,6 +3,7 @@ import classModule as roles
 import eventModule as events
 import itemsModule as items
 import mapModule as maps
+import questModule as quests
 
 class Entity(): #Класс сущности, имеет координаты, обозначение и метод перемещения
     def __init__(self, entMap, x, y):
@@ -264,3 +265,8 @@ class Player(Entity): #Класс игрока, имеет хар-ки, ресу
             action = input()
         if action == 'w' or action == 's' or action == 'a' or action == 'd': #Ходить и взаимодействовать с клетками можно 1 раз в ход
             self.move(action)
+ class QuestAchiever(Entity): #Класс квестодателя
+    quests = {} # Контейнер с квестами
+    def __init__(self, quests={}):
+        self.quests.update(quests) # Присвоение квестов
+        self.mark = "Q"
