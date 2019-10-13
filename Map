@@ -1,0 +1,146 @@
+import random
+class map:#Класс отвечающий за карту
+    map_len = int(input("размер карты в чанках(1 чанк - 30 клеток )"))*30
+    len_temp = map_len
+    map_copy=[]
+    mape = []
+    map1 = []
+    count_generate =0
+    dificult = int(input("Выберете уровень сложности 1,2,3"))
+    rposition =[]
+    znaki = ["🤖","░", "▓","📮","🔒","🏪","😶","😨","🤬","0"]
+def Generate_map():#Генератор карты
+    map.mape.clear()
+    map.map1.clear()
+    for j in range(map.map_len):
+        map.map1 = []
+        for i in range(map.map_len):
+                map.map1.append("░")
+        map.mape.append(map.map1)
+    n = int(map.map_len // 2 + 1)
+    for i in range(n):
+        for j in range(i, map.map_len - i):
+            if i >=n//2and j >=n//2:
+                ran = random.randrange(1, 100)
+                if ran >= 50:
+                    map.mape[i][j] = '\33[32m'+ map.znaki[1]+'\33[0m'#↓
+                    ran = random.randrange(1, 100)
+                    print("1234")
+                if ran >= 50:
+                    map.mape[-i - 1][j] = '\33[32m'+ map.znaki[1]+'\33[0m'#↑
+                    ran = random.randrange(1, 100)
+                if ran >=50:
+                    map.mape[j][i] = '\33[32m'+ map.znaki[1]+'\33[0m'#←
+                    ran = random.randrange(1, 100)
+                if ran >= 50:
+                    map.mape[j][-i - 1] = '\33[32m'+ map.znaki[1]+'\33[0m'#→
+                    ran = random.randrange(1, 100)
+            if i >=n//1.6and j >=n//1.6:
+                map.mape[i][j] = '\33[32m'+ map.znaki[1]+'\33[0m'#↓
+                map.mape[-i - 1][j] = '\33[32m'+ map.znaki[1]+'\33[0m'#↑
+                map.mape[j][i] = '\33[32m'+ map.znaki[1]+'\33[0m'#←
+                map.mape[j][-i - 1] = '\33[32m'+ map.znaki[1]+'\33[0m'#→
+            else:
+                map.mape[i][j] = '\33[30m'+ map.znaki[1]+'\33[0m'#↑
+                map.mape[-i - 1][j] = '\33[93m'+ map.znaki[1]+'\33[0m'#↓
+                map.mape[j][i] = '\33[35m'+ map.znaki[1]+'\33[0m'#←
+                map.mape[j][-i - 1] = '\33[96m'+ map.znaki[1]+'\33[0m'#→
+            if i >=n//2and j >=n//2:
+                ran = random.randrange(1, 100)
+                if ran >= 35:
+                    map.mape[i][j] = '\33[32m'+ map.znaki[1]+'\33[0m'#↓
+                    ran = random.randrange(1, 100)
+                if ran >= 35:
+                    map.mape[-i - 1][j] = '\33[32m'+ map.znaki[1]+'\33[0m'#↑
+                    ran = random.randrange(1, 100)
+                if ran >=35:
+                    map.mape[j][i] = '\33[32m'+ map.znaki[1]+'\33[0m'#←
+                    ran = random.randrange(1, 100)
+                if ran >= 35:
+                    map.mape[j][-i - 1] = '\33[32m'+ map.znaki[1]+'\33[0m'#→
+                    ran = random.randrange(1, 100)
+
+    enemy_count = random.randrange(2,5)+map.dificult+int(map.map_len/5)
+    bonus_count = random.randrange(1,3)-int(map.dificult/2)+int(map.map_len/10)
+    robber_count =random.randrange(1,3)-int(map.dificult/2)+int(map.map_len/10)
+    for i in range(robber_count):#генерация врагов
+        ran_x = int(random.randrange(1,(map.map_len-1)))
+        ran_y = int(random.randrange(1,(map.map_len-1)))
+        if map.mape[ran_x][ran_y]!=map.znaki[5]and map.mape[ran_x][ran_y]!=map.znaki[2]:
+            xfd=[ran_x,ran_y]
+            map.rposition.append(xfd)
+        else:
+            i-=1
+    for i in range(enemy_count):#генерация врагов
+        ran_x = random.randrange(1,(map.map_len-1))
+        ran_y = random.randrange(1,(map.map_len-1))
+        if map.mape[ran_x][ran_y]!=map.znaki[0]:
+            map.mape[ran_x][ran_y]=map.znaki[0]
+        else:
+            i-=1
+    for i in range(bonus_count):#генерация ?
+        ran_x = random.randrange(1,(map.map_len-1))
+        ran_y = random.randrange(1,(map.map_len-1))
+        if map.mape[ran_x][ran_y]!=map.znaki[0] and map.mape[ran_x][ran_y]!=map.znaki[3]:
+            map.mape[ran_x][ran_y]=map.znaki[3]
+        else:
+            i-=1
+    room_count= random.randrange(1,4)
+    for i in range(room_count):#генерация комнат
+        rom =random.randrange(4,6)
+        ran_x = random.randrange(5,(map.map_len-5))
+        ran_y = random.randrange(5,(map.map_len-5))
+        for j in range(rom):
+            for k in range(rom):
+                if j ==rom-1 and k ==rom-2:
+                    ran =random.randrange(1,100)
+                    if ran<=20:
+                        map.mape[ran_x + j][ran_y + k] = map.znaki[4]
+                    else:
+                        map.mape[ran_x +random.randrange(1,rom-1)][ran_y] = '\033[92m'+ map.znaki[1]+'\033[0m'
+                else:
+                    if map.mape[ran_x+j][ran_y+k]==map.znaki[2]:
+                        map.mape[ran_x + j][ran_y + k] = '\033[92m'+ map.znaki[1]+'\033[0m'
+                    else:
+                        map.mape[ran_x+j][ran_y+k]='\033[90m▓\033[0m'
+        for j in range(rom-2):
+            for k in range(rom-2):
+                map.mape[ran_x + j+1][ran_y + k+1] = '\033[92m'+ map.znaki[1]+'\033[0m'
+        if rom ==5:
+            map.mape[ran_x+1][ran_y+1]=map.znaki[3]
+            map.mape[ran_x + 1][ran_y + 3] =map.znaki[3]
+        else:
+            ran = random.randrange(1,100)
+            if ran >=40:
+                map.mape[ran_x + 1][ran_y + 1] =map.znaki[3]
+            else:
+                map.mape[ran_x + 1][ran_y + 1] =map.znaki[5]
+    map.count_generate+=1
+    if ran>=89:
+        ran_x = random.randrange(1, (map.map_len - 1))
+        ran_y = random.randrange(1, (map.map_len - 1))
+        map.mape[ran_x][ran_y]=map.znaki[9]
+    for i in range(3+2):
+        for j in range(i, map.map_len - i):
+            map.mape[i][j] = '\33[106m'+ map.znaki[2]+'\033[0m'
+            map.mape[-i - 1][j] = '\33[103m'+ map.znaki[2]+'\033[0m'
+            map.mape[j][i] = '\33[45m'+ map.znaki[2]+'\033[0m'
+            map.mape[j][-i - 1] = '\33[44m'+ map.znaki[2]+'\033[0m'
+    map.mape[map.map_len//2][map.map_len//2] = map.znaki[7]#Генерация постоянной комнаты и постановка героя
+    m_len_temp = map.map_len
+def print_map(vis,x,y):#Функция вывода карты в консоль
+    for i in range(vis):
+            print("[", end="")
+            for j in range(vis):
+                xx=j+x-int(vis//2.5)
+                yy = i + y - int(vis // 2.5)
+                print(map.mape[yy][xx], end='⏐')
+            print("]")
+def print_allmap(vis):
+    for i in range(vis,map.map_len-vis):
+        print("[", end="")
+        for j in range (vis,map.map_len-vis):
+            print(map.mape[i][j], end='⏐')
+        print("]")
+Generate_map()
+print_allmap(3)
