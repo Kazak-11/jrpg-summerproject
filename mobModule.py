@@ -55,7 +55,7 @@ class Bear2(Mob):
         self.exp = 100
         self.buffer = True
         self.buffer1 = True
-        self.bufferp =True
+        self.bufferp = True
     def turn(self,battle, player):
         if Mob.turn(self, battle, player):
             if battle.range > 2:
