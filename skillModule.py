@@ -56,8 +56,8 @@ class Runaway(Skill):
         self.useDesc = 'Вы сбежали от битвы'
         self.minrange = 30
     def use(self, battle, player, mob):
-        if battle.range>self.minrange and (random.random() < player.dexWithArmor * 8 - mob.dex*3):
-            battle.run = True
+        Skill.use(self, battle, player, mob)
+        battle.run = True
 
 class Shot(Skill):
     def __init__(self):

@@ -21,6 +21,62 @@ class Stun(Effect):
         if Effect.use(self, target, i):
             target.stop = True #Изменяет переменную стана
 
+
+class  Power_weakening(Effect):
+    def __init__(self, turns, target, strength):
+        Effect.__init__(self, turns, target, strength)
+        self.strength = strength
+        self.check(target)
+        target.str -= self.strength
+        self.type = 7
+    def use(self,target, i):
+        if Effect.use(self> target, i):
+            if target.str < self.strength:
+                target.str = 0
+        if not Effect.use(self, target, i):
+            target.str += self.strength
+    def check(self, target):
+                for effect in target.effects:
+                    if effect.type == 7 and effect.turns > 0:
+                        effect.turns += self.turns
+                        if effect.strength < self.strength:
+                            effect.strength = self.strength
+                        self.turns = 0
+
+class Attack_stance(Effect):
+    def __init__(self, turns, target):
+        Effect.__init__(self, turns, target)
+        self.check(target)
+        self.type = 8
+    def use(self,target, i):
+        if Effect.use(self, target, i):
+            target.str += target.str*0.25
+            target.armor -= target.armor*0.2
+    def check(self,target):
+        for effect in target.effects:
+            if effect.type == 8 and effect.turns > 0:
+                effect.turns += self.turns
+                if effect.strength < self.strength:
+                    effect.strength = self.strength
+                self.turns = 0
+
+class Mark(Effect):
+    def __init__(self, turns, target, strength):
+        Effect.__init__(self, turns, target, strength)
+        self.strength = strength
+        self.check(target)
+        self.type = 6
+    def use(self,target, i):
+        if Effect.use(self, target, i):
+            target.hp -= self.player.str +self.strength
+    def check(self,target):
+        for effect in target.effects:
+            if effect.type == 1 and effect.turns > 0:
+                effect.turns += self.turns
+            if effect.strength < self.strength:
+                effect.strength = self.strength
+                self.turns = 0
+
 class Fire(Effect):
     def __init__(self, turns, target, strength):
         Effect.__init__(self, turns, target)
