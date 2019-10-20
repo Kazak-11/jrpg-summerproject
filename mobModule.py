@@ -6,6 +6,9 @@ class Mob():  #Базовый класс моба, имеющий
         self.str = 0
         self.evade = -0.15
         self.exp = 0
+        self.buffer = True
+        self.buffer1 = True
+        self.bufferp = True
         self.stop = False
         self.effects = []
         self.hp = 0
@@ -53,9 +56,6 @@ class Bear2(Mob):
         self.str = 15
         self.maxhp = self.hp
         self.exp = 100
-        self.buffer = True
-        self.buffer1 = True
-        self.bufferp =True
     def turn(self,battle, player):
         if Mob.turn(self, battle, player):
             if battle.range > 2:

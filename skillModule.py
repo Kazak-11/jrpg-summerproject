@@ -32,6 +32,138 @@ class Skill():
         else:
             return False
 
+class Mark(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Mark'
+        self.name = 'Mark'
+        self.useDesc = 'Mark'
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob):
+            if self.mob.turns(self, self.player):
+                effects.mark(3, mob, 65)
+
+class Amining(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.count = 1
+        self.boost = 15
+        self.arrow = 20
+        self.maxstrarrow = 20
+        self.buffer = True
+        self.buffer2 = True
+        self.description = 'Shot'
+        self.name = 'Shot'
+        self.useDesc = 'Вы нанесли 45 урона'
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob):
+            if self.mob.turns(self, self.player) and self.buffer:
+                self.arrow += self.boost
+                self.buffer = False
+                if self.buffer2:
+                    self.arrow = self.maxstrarrow
+
+class Three_shots(Amining):
+    def __init__(self):
+        Skill.__init__(self)
+        self.count = 1
+        self.buffer1 = True
+        self.description = 'Shot'
+        self.name = 'Shot'
+        self.useDesc = 'Вы нанесли 45 урона'
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob) and self.buffer1:
+            self.count = 3
+            if self.buffer2 == True:
+                self.buffer1 = False
+        if self.buffer1 == False:
+            self.count = 1
+
+
+class Rate_of_fire(Three_shots):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Shot'
+        self.name = 'Shot'
+        self.buffer3 = True
+        self.useDesc = 'Вы нанесли 20 урона'
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob):
+            if self.mob.turns(self, self.player):
+                self.shoot_speed = (self.arrow*player.int)/5
+
+
+class Shot(Rate_of_fire):
+    def __init__(self):
+        Skill.__init__(self)
+        self.buffer2 = True
+        self.description = 'Shot'
+        self.name = 'Shot'
+        self.useDesc = 'Вы нанесли 20 урона'
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob) and self.buffer3 == False:
+            mob.hp -= self.arrow*self.count
+            if self.buffer3:
+                mob.hp -= self.arrow*self.count+self.shoot_speed
+                self.buffer3 = False
+
+class Strong_beat(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Fireball'
+        self.name = 'Fireball'
+        self.useDesc = 'Вы нанесли 20 урона'
+        self.strong_beat = 65
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob):
+            mob.hp -= self.strong_beat
+            mob.armor -= mob.armor*0.2
+
+class Death_blow(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Fireball'
+        self.name = 'Fireball'
+        self.useDesc = 'Вы нанесли 20 урона'
+        self.strong_beat = 65
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob):
+            mob.hp -= mob.hp
+
+class Magic_shield(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Fireball'
+        self.name = 'Fireball'
+        self.useDesc = 'Вы нанесли 20 урона'
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob):
+            minor_life = player.hp
+            self.player.hp = minor_life
+
+class Magic_arrow(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Fireball'
+        self.name = 'Fireball'
+        self.useDesc = 'Вы нанесли 20 урона'
+        self.magic_arrow = 7
+    def use(self, battle, player, mob):
+        if Skill.use(self,battle, player, mob):
+            player.hp -= self.magic_arrow*5
+
+class Random_magic(Skill):
+    def __init__(self):
+        Skill.__init__(self)
+        self.description = 'Fireball'
+        self.name = 'Fireball'
+        self.useDesc = 'Вы нанесли 20 урона'
+        self.magic_arrow = 7
+    def use(self, battle, player, mob):
+        r = random.randint(0, 100):
+        for(i in range(1,r))
+            if Skill.use(self,battle, player, mob):
+                random.choise()
 
 class Run(Skill):
     def __init__(self):
