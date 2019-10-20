@@ -12,13 +12,19 @@ class Quest: # Класс квестов
         a = i_s.index("move")
         if a % 2 == 0:
           coords = list(int(i_s[a+1].strip().split(","))
-          x = coords[0]
-          y = coords[1]
+          o.update({"move", coords})
         else:
           coords = list(int(i+s[a-1].strip().split(","))
-          x = coords[0]
-          y = coords[1]
-          o.update({"move", [x, y]})
+          o.update({"move", coords})
+      elif "have_an_items" in i_s:
+        a = i_s.index("have_an_items")
+        if a % 2 == 0:
+          items_ = list(int(i_s[a+1].strip().split(",")))
+          o.update({"have_an_items", items})
+        else:
+          items_ = list(int(i_s[a-1].strip().split(",")))
+          o.update({"have_an_items", items})
+      return o
   def __init__(self, name, desc, requirements, reward):
     self.name = name
     self.desc = desc
